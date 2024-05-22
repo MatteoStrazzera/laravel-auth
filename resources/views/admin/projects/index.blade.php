@@ -25,7 +25,10 @@
                                 </td>
                                 <td>{{ $project->title }}</td>
                                 <td>{{ $project->slug }}</td>
-                                <td>View/Edit/Delete</td>
+                                <td>
+                                    <a class="btn btn-primary" href="{{ route('admin.projects.show', $project) }}">View</a>
+                                    /Edit/Delete
+                                </td>
                             </tr>
                         @empty
 
