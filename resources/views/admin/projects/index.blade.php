@@ -3,8 +3,12 @@
 @section('content')
     <section class="py-5">
         <div class="container">
-            <h2 class="text-muted">All Projects</h2>
-            <div class="table-responsive">
+            <div class="container d-flex align-items-center justify-content-between">
+                <h2 class="text-muted">All Projects</h2>
+                <a class="btn btn-success" href="{{ route('admin.projects.create') }}">New Project</a>
+            </div>
+
+            <div class="table-responsive py-5">
                 <table class="table table-light table-bordered table-striped">
                     <thead>
                         <tr>
