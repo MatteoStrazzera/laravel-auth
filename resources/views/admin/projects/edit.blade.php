@@ -4,15 +4,7 @@
     <div class="container py-5">
         <h2>Editing Project: {{ $project->title }}</h2>
 
-        @if ($errors->any())
-            <div class="alert alert-danger" role="alert">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+        @include('partials.alert-error-form')
 
         <form action="{{ route('admin.projects.update', $project) }}" method="post">
             @csrf
