@@ -39,7 +39,7 @@ class ProjectController extends Controller
 
         Project::create($validated);
 
-        return to_route('admin.projects.index');
+        return to_route('admin.projects.index')->with('message', "Project $request->title created successfully");
     }
 
     /**
@@ -55,7 +55,7 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        return view('admin.projects.edit', compact('project'));
     }
 
     /**
@@ -63,7 +63,15 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        //
+        $validated = $request->validated();
+
+        $slug = Str::of($request->title)->slug('-');
+
+        $validated['slug'] = $slug;
+
+        $project->update($validated);
+
+        return to_route('admin.projects.index',)->with('message', "Project $project->title updated successfully");
     }
 
     /**
@@ -71,6 +79,6 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        // 
     }
 }

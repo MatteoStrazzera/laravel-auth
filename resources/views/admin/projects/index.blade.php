@@ -6,8 +6,15 @@
             <div class="container d-flex align-items-center justify-content-between">
                 <h2 class="text-muted">All Projects</h2>
                 <a class="btn btn-success" href="{{ route('admin.projects.create') }}">New Project</a>
-            </div>
 
+
+            </div>
+            @if (session('message'))
+                <div class="alert alert-success alert-dismissable fade show" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    {{ session('message') }}
+                </div>
+            @endif
             <div class="table-responsive py-5">
                 <table class="table table-light table-bordered table-striped">
                     <thead>
@@ -31,7 +38,8 @@
                                 <td>{{ $project->slug }}</td>
                                 <td>
                                     <a class="btn btn-primary" href="{{ route('admin.projects.show', $project) }}">View</a>
-                                    /Edit/Delete
+                                    <a class="btn btn-success" href="{{ route('admin.projects.edit', $project) }}">Edit</a>
+                                    /Delete
                                 </td>
                             </tr>
                         @empty
