@@ -6,6 +6,8 @@ use App\Models\Project;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Auth\Events\Validated;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ProjectController extends Controller
@@ -36,6 +38,12 @@ class ProjectController extends Controller
         $slug = Str::of($request->title)->slug('-');
 
         $validated['slug'] = $slug;
+
+        if ($request->has('image')) {
+            $image_path = Storage::put('uploads', $validated['image']);
+            // @dd($validated, $image_path);
+            $validated['image'] = $image_path;
+        }
 
         Project::create($validated);
 
@@ -69,9 +77,17 @@ class ProjectController extends Controller
 
         $validated['slug'] = $slug;
 
+        if ($request->has('image')) {
+            if ($project->image) {
+                Storage::delete($project->image);
+            }
+            $image_path = Storage::put('uploads', $validated['image']);
+            // @dd($validated, $image_path);
+            $validated['image'] = $image_path;
+        }
         $project->update($validated);
 
-        return to_route('admin.projects.index',)->with('message', "Project $project->title updated successfully");
+        return to_route('admin.projects.index')->with('message', "Project $project->title updated successfully");
     }
 
     /**
@@ -79,6 +95,10 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        if ($project->image) {
+            Storage::delete($project->image);
+        }
+
         $project->delete();
 
         return to_route('admin.projects.index')->with('message', "Project $project->title deleted successfully");
